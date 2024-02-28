@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SoundVibe</string>
+    <string name="title_songs">Songs</string>
+    <string name="title_activity_player">PlayerActivity</string>
+</resources>

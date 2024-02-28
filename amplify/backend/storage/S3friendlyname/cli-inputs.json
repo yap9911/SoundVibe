@@ -1,0 +1,18 @@
+{
+  "resourceName": "S3friendlyname",
+  "policyUUID": "17f6f063",
+  "bucketName": "song-vibe-en-songs",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}
