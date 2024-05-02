@@ -12,6 +12,7 @@ import android.content.Intent;
 
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.AudioTrack;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -35,8 +37,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
+import androidx.fragment.app.Fragment;
 import androidx.palette.graphics.Palette;
 
+import com.bullhead.equalizer.EqualizerFragment;
 import com.bumptech.glide.Glide;
 
 import com.bumptech.glide.load.DataSource;
@@ -56,9 +60,8 @@ import java.util.Locale;
 public class PlayerActivity extends AppCompatActivity implements Player.Listener {
 
     private ExoPlayer player;
-    private ImageView songCover, nextBtn, prevBtn, playOrderBtn, backBtn;
+    private ImageView songCover, nextBtn, prevBtn, playOrderBtn, backBtn, eqButton;
     private TextView songName, artistName, durationPlayed, totalDuration;
-
     private RelativeLayout mContainer;
     public static FloatingActionButton playPauseBtn;
     private SeekBar seekBar;
@@ -66,6 +69,7 @@ public class PlayerActivity extends AppCompatActivity implements Player.Listener
     static ArrayList<SongsModel> musicList;
     private int currentSongPosition;
     private LineBarVisualizer visualizerLineBar;
+    private FrameLayout eqContainer;
 
     //is the activity bound?
     boolean isBound = false;
@@ -165,6 +169,24 @@ public class PlayerActivity extends AppCompatActivity implements Player.Listener
             }
         });
 
+        eqButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (eqContainer.getVisibility() == View.GONE){
+                    eqContainer.setVisibility(View.VISIBLE);
+                }
+                int sessionId = player.getAudioSessionId();
+
+                EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
+                        .setAccentColor(Color.parseColor("#4caf50"))
+                        .setAudioSessionId(sessionId)
+                        .build();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.eqFrame, equalizerFragment)
+                        .commit();
+            }
+        });
+
     }
 
     private void doBindService() {
@@ -214,6 +236,8 @@ public class PlayerActivity extends AppCompatActivity implements Player.Listener
         playerView = findViewById(R.id.playerView);
         visualizerLineBar = findViewById(R.id.visualizerLineBar);
         mContainer = findViewById(R.id.mContainer);
+        eqButton = findViewById(R.id.equalizer_btn);
+        eqContainer = findViewById(R.id.eqFrame);
     }
 
     private void setupPlayer(int currentSongPosition) {
@@ -487,8 +511,20 @@ public class PlayerActivity extends AppCompatActivity implements Player.Listener
 
     @Override
     public void onBackPressed() {
-        // Handle the back button press
-        super.onBackPressed();
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.eqFrame);
+        if(eqContainer.getVisibility() == View.GONE){
+            super.onBackPressed();
+        } else {
+            if (fragment.isVisible() && eqContainer.getVisibility() == View.VISIBLE) {
+                eqContainer.setVisibility(View.GONE);
+            } else {
+                if (player != null) {
+                    player.release();
+                }
+                super.onBackPressed();
+            }
+        }
+
     }
 
 }

@@ -45,6 +45,16 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
+        <ImageView
+            android:id="@+id/equalizer_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/baseline_equalizer_24"
+            />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -191,5 +201,15 @@
         android:layout_marginTop="16dp"
         android:layout_alignParentBottom="true"
         android:layout_below="@id/layout_bottom" />
+
+    <FrameLayout
+        android:id="@+id/eqFrame"
+        android:layout_width="320dp"
+        android:layout_height="480dp"
+        android:layout_below="@id/layout_top"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:background="@android:color/transparent"
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -92,5 +92,6 @@ dependencies {
     implementation ("de.hdodenhof:circleimageview:3.1.0")
     implementation("io.github.gautamchibde:audiovisualizer:2.2.5")
     implementation("androidx.palette:palette:1.0.0")
+    implementation ("com.github.bullheadandplato:AndroidEqualizer:2.2")
 
 }
